@@ -1,6 +1,11 @@
 import { Work_Sans } from 'next/font/google';
 import './globals.css';
+
 import { AuthProvider } from '@/actions/AuthProvider';
+import { ThemeProvider } from '@/actions/ThemeProvider';
+import Header from '@/components/header/Header';
+
+import { cn } from '@/lib/utils';
 
 const workSans = Work_Sans({
   subsets: ['latin'],
@@ -15,12 +20,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang='en'>
+    <html className='light' lang='en'>
       <AuthProvider>
-        <body
-          className={`bg-primary-grey-100 overflow-hidden ${workSans.className}`}
+        <body  className={cn(
+          "min-h-screen bg-background font-sans antialiased", workSans.className)}
         >
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+          <Header/>
+          {children}</ThemeProvider>
         </body>
       </AuthProvider>
     </html>

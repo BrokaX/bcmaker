@@ -6,7 +6,7 @@ import {
   deleteObject,
 } from 'firebase/storage';
 import { v4 } from 'uuid';
-import storage from './firebase';
+import storage from '../firebase/firebase';
 
 export const uploadImage = async (fileOrUrl, source) => {
   try {

@@ -1,11 +1,10 @@
-import { SignupFormSchema } from '../lib/definisions';
-import { auth, db } from '../../services/firebase';
+// import { SignupFormSchema } from '../lib/definisions';
+import { auth, db } from '@/firebase/firebase';
 import { Timestamp,doc, setDoc, collection, addDoc } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  
   getAuth,
   signOut,
 } from 'firebase/auth';
@@ -13,7 +12,7 @@ import {
 // Create account
 export const signup = async (formData) => {
   try {
-    const { name, email, password } = formData;
+    const { email, password } = formData;
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -41,7 +40,6 @@ export const signup = async (formData) => {
   } catch (error) {
     throw new Error(error.message);
   }
-  // navigate('/profile');
 };
 
 // Login

@@ -1,17 +1,16 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-// import ProfileMenu from './ProfileMenu';
+import DropdownMenu from '@/components/header/ProfileMenu';
 
 import { useState } from 'react';
 
 import { icons, navbarLinks } from '@/constants/index';
 import { usePathname } from 'next/navigation';
 import { useAuthContext } from '@/actions/AuthProvider';
+import { Button } from '../ui/button';
 
 const Header = () => {
-  const styles = {};
-  const [visible, setVisible] = useState(false);
   const { user } = useAuthContext();
 
   const [openNavigation, setOpenNavigation] = useState(false);
@@ -19,100 +18,67 @@ const Header = () => {
   const toggleNavigation = () => {
     setOpenNavigation(!openNavigation);
   };
-
   const pathname = usePathname();
-
   return (
-    <header
-      className={`fixed top-0 left-0 w-full  border-b border-n-6 lg:bg-n-8/90 lg:backdrop-blur-sm ${
-        openNavigation ? 'bg-n-8' : 'bg-n-8/90 backdrop-blur-sm'
-      }`}
-    >
-      <div className='flex items-center px-5 lg:px-7.5 xl:px-10 max-lg:py-4'>
-        <Link className='block w-[12rem] xl:mr-8 relative p-4' href='/'>
+    <nav className='w-full bg-white dark:bg-gray-900 fixed z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600'>
+      <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
+        <Link href='/' className='flex items-center rtl:space-x-reverse'>
           <Image
             priority
-            className='object-contain '
+            className='h-8'
             src={icons.logo.src}
             width={120}
             height={60}
             alt={icons.logo.alt}
           />
         </Link>
-        <nav
-          className={`${
-            openNavigation ? 'flex' : 'hidden'
-          } fixed top-[5rem] left-0 right-0 bottom-0 bg-n-8/70 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
-        >
-          <div className='relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row'>
-          {navbarLinks.slice(0, 4).map((link) => (
-            <Link
-              className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 
-              px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
-                link.path === pathname
-                  ? 'z-2 lg:text-n-1'
-                  : 'lg:text-n-1/50'
-              } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
-              key={link.title}
-              href={link.path}
-            >
-              {link.title}
-            </Link>
-          ))}
-          </div>
-        </nav>
-        <div className='flex flex-col'>
+        <div className='w-[120px] flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse '>
           {user.user !== null ? (
-            <div onClick={() => toggleMenu()} className={styles.dropdown}>
-              <Image
-                priority
-                className={styles.userImage}
-                src={user.photoURL}
-                width={220}
-                height={60}
-                alt={user.displayName}
-              />
-              {visible && (
-                <div className={styles.options}>
-                  {/* <ProfileMenu
-                  name={user.displayName}
-                  email={user.email}
-                  image={user.photoURL}
-                /> */}
-                </div>
-              )}
+            <div className='h-8'>
+              <DropdownMenu user={user} />
             </div>
           ) : (
-            <div className='flex flex-row'>
-              <Link
-                className='button  mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block'
-                href='/login'
-              >
-                Login
-              </Link>
-              <Link
-                className='button  mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block'
-                href='/register'
-              >
-                Register
-              </Link>
-            </div>
+            <Link className='h-8' href='/login'>
+              <Button className='h-8'>Login</Button>
+            </Link>
           )}
-        </div>
 
+          <button
+            onClick={() => toggleNavigation()}
+            type='button'
+            className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
+          >
+            <span className='sr-only'>Open main menu</span>
+            <Image
+              src={`${openNavigation ? icons.close.src : icons.menu.src}`}
+              alt='menu'
+              width={30}
+              height={30}
+            />
+          </button>
+        </div>
         <div
-          onClick={() => toggleNavigation()}
-          className='cursor-pointer ml-auto lg:hidden '
+          className={`items-center justify-between  w-full md:flex md:w-auto md:order-1 ${
+            openNavigation ? '' : 'hidden'
+          }`}
+          id='navbar-sticky'
         >
-          <Image
-            src={`${openNavigation ? icons.close.src : icons.menu.src}`}
-            alt='menu'
-            width={20}
-            height={20}
-          />
+          <div className='flex flex-col md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
+            {navbarLinks.map((link) => {
+              return (
+                <Link
+                  key={link.title}
+                  href={link.path}
+                  className={` flex justify-center align-center py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 `}
+                >
+                  {link.title}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </header>
+    </nav>
   );
 };
 

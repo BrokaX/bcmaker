@@ -34,7 +34,4 @@ export const navbarLinks = [
   { title: 'Create Card', path: '/create-card' },
   { title: 'About', path: '/about' },
   { title: 'Contact Us', path: '/contact' },
-  { title: 'Profile', path: '/profile' },
-  { title: 'My Cards', path: '/cards' },
-  { title: 'Settings', path: '/settings' },
 ];

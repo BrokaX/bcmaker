@@ -20,7 +20,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html className='light' lang='en'>
+    <html className='dark' lang='en'>
       <AuthProvider>
         <body  className={cn(
           "min-h-screen bg-background font-sans antialiased", workSans.className)}

@@ -32,6 +32,6 @@ export const icons = {
 export const navbarLinks = [
   { title: 'Home', path: '/' },
   { title: 'Create Card', path: '/create-card' },
-  { title: 'About', path: '/about' },
+  { title: 'Profile', path: '/profile' },
   { title: 'Contact Us', path: '/contact' },
 ];
